@@ -1,0 +1,18 @@
+{
+    "name": "{{ cookiecutter.project_slug }}",
+    "version": "0.1.0",
+    "description": "{{ cookiecutter.project_description }}",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/{{ cookiecutter.github_user }}/{{ cookiecutter.project_slug }}.git"
+    },
+    "keywords": [
+        "{{ cookiecutter.project_keywords.split(',')|join('",\n        "') }}"
+    ],
+    "author": "{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>",
+    "license": "{{ cookiecutter.license_id }}"
+}
