@@ -1,0 +1,10 @@
+{
+    "project_name": "Service Application",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+    "project_description": "A template project for API service applications using nestjs.",
+    "project_keywords": "service,template,nestjs,backend",
+    "author_name": "HE Yaowen",
+    "author_email": "he.yaowen@hotmail.com",
+    "github_user": "he-yaowen",
+    "node_version": "16.18.1"
+}
