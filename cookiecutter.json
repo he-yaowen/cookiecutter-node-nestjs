@@ -5,6 +5,16 @@
     "project_keywords": "service,template,nestjs,backend",
     "author_name": "HE Yaowen",
     "author_email": "he.yaowen@hotmail.com",
+    "license_id": [
+        "GPL-3.0",
+        "MIT",
+        "BSD-3-Clause",
+        "MPL-2.0",
+        "Apache-2.0",
+        "No license"
+    ],
+    "license_fullname": "{{ cookiecutter.author_name }}",
+    "license_year": "{% now 'utc', '%Y' %}",
     "github_user": "he-yaowen",
     "node_version": "16.18.1"
 }
