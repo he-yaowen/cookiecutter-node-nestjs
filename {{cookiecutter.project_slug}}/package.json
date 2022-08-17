@@ -14,5 +14,8 @@
         "{{ cookiecutter.project_keywords.split(',')|join('",\n        "') }}"
     ],
     "author": "{{ cookiecutter.author_name }} <{{ cookiecutter.author_email }}>",
-    "license": "{{ cookiecutter.license_id }}"
+    "license": "{{ cookiecutter.license_id }}",
+    "devDependencies": {
+        "typescript": "^4.8.3"
+    }
 }
