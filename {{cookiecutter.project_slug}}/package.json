@@ -7,7 +7,7 @@
         "build": "nest build -p tsconfig.json",
         "dev": "nest start -p tsconfig.json --watch",
         "start": "node dist/src/main",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "repository": {
         "type": "git",
