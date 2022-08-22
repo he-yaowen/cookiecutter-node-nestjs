@@ -34,8 +34,21 @@
         "typescript": "^4.8.3"
     },
     "dependencies": {
+{% if cookiecutter.use_mikro_orm == 'yes' %}        "@mikro-orm/core": "^5.4.2",
+        "@mikro-orm/migrations": "^5.4.2",
+        "@mikro-orm/nestjs": "^5.1.2",
+        "@mikro-orm/reflection": "^5.4.2",
+        "@mikro-orm/sql-highlighter": "^1.0.1",
+        "@mikro-orm/sqlite": "^5.4.2",{% endif %}
         "@nestjs/core": "^9.1.4",
         "@nestjs/platform-express": "^9.1.4"{% if cookiecutter.use_swaggger == 'yes' %},
         "@nestjs/swagger": "^6.1.2"{% endif %}
-    }
+    }{% if cookiecutter.use_mikro_orm == 'yes' %},
+    "mikro-orm": {
+        "useTsNode": true,
+        "configPaths": [
+            "./mikro-orm.config.ts",
+            "./dist/mikro-orm.config.js"
+        ]
+    }{% endif %}
 }
