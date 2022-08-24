@@ -1,5 +1,5 @@
 import {NestFactory} from "@nestjs/core";
-{% if cookiecutter.use_swaggger == 'yes' %}import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";{% endif %}
+{% if cookiecutter.use_swagger == 'yes' %}import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";{% endif %}
 import {ApplicationModule} from "./modules/app.module";
 {% if cookiecutter.use_mikro_orm == 'yes' %}import {MikroORM} from "@mikro-orm/core";{% endif %}
 
@@ -8,7 +8,7 @@ const DEFAULT_PORT = 3000;
 async function bootstrap(): Promise<void>
 {
     const app = await NestFactory.create(ApplicationModule);
-    {% if cookiecutter.use_swaggger == 'yes' %}
+    {% if cookiecutter.use_swagger == 'yes' %}
     const options = new DocumentBuilder()
         .setTitle("API Template NestJS")
         .setDescription("The NestJS API description")
