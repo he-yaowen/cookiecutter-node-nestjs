@@ -1,4 +1,5 @@
 import random
+import yaml
 from chance import chance
 
 license_stubs = {
@@ -42,3 +43,17 @@ def test_bake_readme(cookies):
 
     assert license_stubs[license_id] in readme
     assert f'Copyright (C) {context["license_year"]} {context["license_fullname"]} <{context["author_email"]}>' in readme
+
+
+def test_bake_docker(cookies):
+    context = {
+        'project_slug': chance.word(),
+        'node_version': chance.pickone(['14.0.0', '15.0.0', '16.0.0'])
+    }
+
+    result = cookies.bake(extra_context=context)
+
+    docker_compose = yaml.load(result.project_path.joinpath('docker-compose.yml').read_text(), Loader=yaml.Loader)
+
+    assert docker_compose['services']['app']['container_name'] == context['project_slug']
+    assert docker_compose['services']['app']['build']['args']['NODE_VERSION'] == context['node_version']
