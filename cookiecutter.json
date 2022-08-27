@@ -18,5 +18,6 @@
     "github_user": "he-yaowen",
     "node_version": "16.18.1",
     "use_swagger": ["yes", "no"],
-    "use_mikro_orm": ["yes", "no"]
+    "use_mikro_orm": ["yes", "no"],
+    "docker_port": "3000"
 }

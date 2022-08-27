@@ -7,4 +7,4 @@ services:
       args:
         NODE_VERSION: "{{ cookiecutter.node_version }}"
     ports:
-      - 3000:3000
+      - "{{ cookiecutter.docker_port }}:3000"

@@ -48,7 +48,8 @@ def test_bake_readme(cookies):
 def test_bake_docker(cookies):
     context = {
         'project_slug': chance.word(),
-        'node_version': chance.pickone(['14.0.0', '15.0.0', '16.0.0'])
+        'node_version': chance.pickone(['14.0.0', '15.0.0', '16.0.0']),
+        'docker_port': str(random.randint(3000, 4000))
     }
 
     result = cookies.bake(extra_context=context)
@@ -57,3 +58,4 @@ def test_bake_docker(cookies):
 
     assert docker_compose['services']['app']['container_name'] == context['project_slug']
     assert docker_compose['services']['app']['build']['args']['NODE_VERSION'] == context['node_version']
+    assert docker_compose['services']['app']['ports'][0] == f'{context["docker_port"]}:3000'
