@@ -1,17 +1,17 @@
 import os
 import shutil
+from glob import glob
 
 
-{% if cookiecutter.license_id != 'No license' %}
-shutil.copy('LICENSE.{{ cookiecutter.license_id }}', 'LICENSE')
-{% endif %}
-os.unlink('LICENSE.Apache-2.0')
-os.unlink('LICENSE.BSD-3-Clause')
-os.unlink('LICENSE.GPL-3.0')
-os.unlink('LICENSE.MIT')
-os.unlink('LICENSE.MPL-2.0')
+license_id = '{{ cookiecutter.license_id }}'
+use_mikro_orm = '{{ cookiecutter.use_mikro_orm }}'
 
-{% if cookiecutter.use_mikro_orm == 'no' %}
-os.unlink('mikro-orm.config.ts')
-shutil.rmtree('src/modules/user')
-{% endif %}
+if license_id != 'None':
+    os.rename('LICENSE.{{ cookiecutter.license_id }}', 'LICENSE')
+
+for license_file in glob('LICENSE.*'):
+    os.unlink(license_file)
+
+if use_mikro_orm == 'no':
+    os.unlink('mikro-orm.config.ts')
+    shutil.rmtree('src/modules/user')
