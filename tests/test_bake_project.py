@@ -1,4 +1,5 @@
 import random
+import json
 import yaml
 from chance import chance
 
@@ -70,3 +71,76 @@ def test_bake_nvmrc(cookies):
     nvmrc = result.project_path.joinpath('.nvmrc').read_text()
 
     assert nvmrc == context['node_version']
+
+
+def test_bake_package(cookies):
+    license_id = chance.pickone([key for key in license_stubs.keys()])
+
+    context = {
+        'project_slug': chance.word(),
+        'project_version': f'{random.randint(0, 10)}.{random.randint(0, 10)}.{random.randint(0, 10)}',
+        'project_description': chance.sentence(),
+        'project_keywords': ','.join([chance.word() for i in range(0, 5)]),
+        'author_name': chance.name(),
+        'author_email': chance.email(),
+        'license_id': license_id,
+        'license_fullname': chance.name(),
+        'license_year': random.randint(2000, 2022),
+        'github_user': chance.name(),
+    }
+
+    result = cookies.bake(extra_context=context)
+    package = json.loads(result.project_path.joinpath('package.json').read_text())
+
+    assert package['name'] == context['project_slug']
+    assert package['version'] == context['project_version']
+    assert package['description'] == context['project_description']
+    assert package['repository']['url'] == f'git+https://github.com/{context["github_user"]}/{context["project_slug"]}.git'
+    assert package['keywords'] == context['project_keywords'].split(',')
+    assert package['author'] == f'{context["author_name"]} <{context["author_email"]}>'
+    assert package['license'] == license_id
+
+    def check_dependencies(ctx: dict, deps: list[str], field: str, exists: bool):
+        pkg = json.loads(cookies.bake(extra_context=ctx).project_path.joinpath('package.json').read_text())
+
+        for dep in deps:
+            if exists:
+                assert dep in pkg[field]
+            else:
+                assert dep not in pkg[field]
+
+        return pkg
+
+    context['use_swagger'] = 'yes'
+    check_dependencies(context, ['@nestjs/swagger'], 'dependencies', True)
+
+    context['use_swagger'] = 'no'
+    check_dependencies(context, ['@nestjs/swagger'], 'dependencies', False)
+
+    context['use_mikro_orm'] = 'yes'
+    pkg = check_dependencies(context, [
+        '@mikro-orm/core',
+        '@mikro-orm/migrations',
+        '@mikro-orm/nestjs',
+        '@mikro-orm/reflection',
+        '@mikro-orm/sql-highlighter',
+        '@mikro-orm/sqlite'
+    ], 'dependencies', True)
+    assert pkg['mikro-orm'] == {
+        'useTsNode': True,
+        'configPaths': [
+            './mikro-orm.config.ts',
+            './dist/mikro-orm.config.js'
+        ]
+    }
+
+    context['use_mikro_orm'] = 'no'
+    pkg = check_dependencies(context, [
+        '@mikro-orm/core',
+        '@mikro-orm/migrations',
+        '@mikro-orm/nestjs',
+        '@mikro-orm/reflection',
+        '@mikro-orm/sql-highlighter',
+        '@mikro-orm/sqlite'
+    ], 'dependencies', False)
+    assert 'mikro-orm' not in pkg
