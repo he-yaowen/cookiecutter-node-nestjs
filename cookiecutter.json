@@ -3,6 +3,7 @@
     "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
     "project_description": "A template project for API service applications using nestjs.",
     "project_keywords": "service,template,nestjs,backend",
+    "project_version": "0.1.0",
     "author_name": "HE Yaowen",
     "author_email": "he.yaowen@hotmail.com",
     "license_id": [
